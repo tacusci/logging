@@ -17,6 +17,7 @@ var OutputPath bool = true
 var OutputDateTime bool = true
 
 const (
+	BlankLevel Level = 10
 	InfoLevel  Level = 2
 	DebugLevel Level = 1
 )
