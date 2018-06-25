@@ -1,6 +1,7 @@
 package logging
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"runtime"
@@ -12,6 +13,8 @@ import (
 type Level int
 
 var currentLoggingLevel Level
+var OutputPath bool = true
+var OutputDateTime bool = true
 
 const (
 	InfoLevel  Level = 2
@@ -23,7 +26,7 @@ func init() {
 }
 
 func createCallbackLabel() string {
-	function, _, line, _ := runtime.Caller(2)
+	function, _, line, _ := runtime.Caller(3)
 	return fmt.Sprintf("(%s):%d", runtime.FuncForPC(function).Name(), line)
 }
 
@@ -55,39 +58,45 @@ func RedOutput(stringToPrint string) {
 //Info outputs log line to console with green color text
 func Info(stringToPrint string) {
 	if currentLoggingLevel <= InfoLevel {
-		GreenOutput(fmt.Sprintf("%s: INFO %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+		GreenOutput(createOutputString(stringToPrint, "INFO", true))
+		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
 }
 
 //InfoNnl outputs log line to console with green color text without newline
 func InfoNnl(stringToPrint string) {
 	if currentLoggingLevel <= InfoLevel {
-		GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+		GreenOutput(createOutputString(stringToPrint, "INFO", false))
+		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
 }
 
 //Debug outputs log line to console with yellow color text
 func Debug(stringToPrint string) {
 	if currentLoggingLevel <= DebugLevel {
-		YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+		YellowOutput(createOutputString(stringToPrint, "DEBUG", true))
+		//YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
 }
 
 //DebugNnl outputs log line to console with yellow color text without newline
 func DebugNnl(stringToPrint string) {
 	if currentLoggingLevel <= DebugLevel {
-		YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+		YellowOutput(createOutputString(stringToPrint, "DEBUG", false))
+		// YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
 }
 
 //Error outputs log line to console with red color text
 func Error(stringToPrint string) {
-	RedOutput(fmt.Sprintf("%s: ERROR %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+	RedOutput(createOutputString(stringToPrint, "ERROR", true))
+	// RedOutput(fmt.Sprintf("%s: ERROR %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
 }
 
 //ErrorNnl outputs log line to console with red color text without newline
 func ErrorNnl(stringToPrint string) {
-	RedOutput(fmt.Sprintf("%s: ERROR %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+	RedOutput(createOutputString(stringToPrint, "ERROR", true))
+	// RedOutput(fmt.Sprintf("%s: ERROR %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
 }
 
 //ErrorAndExit outputs log line to console with red color text and exits
@@ -108,4 +117,21 @@ func GetTimeString() string {
 	return fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",
 		t.Year(), t.Month(), t.Day(),
 		t.Hour(), t.Minute(), t.Second())
+}
+
+func createOutputString(stp string, lvl string, nl bool) string {
+	data := make([]byte, 0)
+	sb := bytes.NewBuffer(data)
+	if OutputDateTime {
+		sb.WriteString(fmt.Sprintf("%s: ", GetTimeString()))
+	}
+	sb.WriteString(lvl)
+	if OutputPath {
+		sb.WriteString(fmt.Sprintf(" %s", createCallbackLabel()))
+	}
+	sb.WriteString(fmt.Sprintf(" -> %s", stp))
+	if nl {
+		sb.WriteString("\n")
+	}
+	return sb.String()
 }
