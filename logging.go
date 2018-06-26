@@ -13,6 +13,7 @@ import (
 type Level int
 
 var currentLoggingLevel Level
+var OutputLogLevelFlag = true
 var OutputPath bool = true
 var OutputDateTime bool = true
 
@@ -126,7 +127,9 @@ func createOutputString(stp string, lvl string, nl bool) string {
 	if OutputDateTime {
 		sb.WriteString(fmt.Sprintf("%s: ", GetTimeString()))
 	}
-	sb.WriteString(lvl)
+	if OutputLogLevelFlag {
+		sb.WriteString(lvl)
+	}
 	if OutputPath {
 		sb.WriteString(fmt.Sprintf(" %s", createCallbackLabel()))
 	}
