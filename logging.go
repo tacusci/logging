@@ -16,6 +16,7 @@ var currentLoggingLevel Level
 var OutputLogLevelFlag = true
 var OutputPath bool = true
 var OutputDateTime bool = true
+var OutputArrowSuffix bool = true
 
 const (
 	BlankLevel Level = 10
@@ -133,7 +134,11 @@ func createOutputString(stp string, lvl string, nl bool) string {
 	if OutputPath {
 		sb.WriteString(fmt.Sprintf(" %s", createCallbackLabel()))
 	}
-	sb.WriteString(fmt.Sprintf(" -> %s", stp))
+	if OutputArrowSuffix {
+		sb.WriteString(fmt.Sprintf(" -> %s", stp))
+	} else {
+		sb.WriteString(stp)
+	}
 	if nl {
 		sb.WriteString("\n")
 	}
