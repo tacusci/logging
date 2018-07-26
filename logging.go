@@ -13,6 +13,7 @@ import (
 type Level int
 
 var currentLoggingLevel Level
+var LoggingOutputReciever chan string
 var OutputLogLevelFlag = true
 var OutputPath bool = true
 var OutputDateTime bool = true
@@ -40,20 +41,32 @@ func SetLevel(loggingLevel Level) {
 
 //ColoredOutput helper to make it easy to logout with date time stamp
 func ColoredOutput(colorPrinter *color.Color, stringToPrint string) {
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
+	}
 	colorPrinter.Printf(stringToPrint)
 }
 
 func GreenOutput(stringToPrint string) {
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
+	}
 	green := color.New(color.FgGreen)
 	green.Printf(stringToPrint)
 }
 
 func YellowOutput(stringToPrint string) {
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
+	}
 	yellow := color.New(color.FgYellow)
 	yellow.Printf(stringToPrint)
 }
 
 func RedOutput(stringToPrint string) {
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
+	}
 	red := color.New(color.FgRed)
 	red.Printf(stringToPrint)
 }
