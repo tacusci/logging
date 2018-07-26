@@ -71,6 +71,14 @@ func RedOutput(stringToPrint string) {
 	red.Printf(stringToPrint)
 }
 
+func WhiteOutput(stringToPrint string) {
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
+	}
+	white := color.New(color.FgWhite)
+	white.Printf(stringToPrint)
+}
+
 //Info outputs log line to console with green color text
 func Info(stringToPrint string) {
 	if currentLoggingLevel <= InfoLevel {
