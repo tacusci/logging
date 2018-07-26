@@ -95,6 +95,22 @@ func InfoNnl(stringToPrint string) {
 	}
 }
 
+//Info outputs log line to console with green color text
+func InfoNoColor(stringToPrint string) {
+	if currentLoggingLevel <= InfoLevel {
+		WhiteOutput(createOutputString(stringToPrint, "INFO", true))
+		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+	}
+}
+
+//InfoNnl outputs log line to console with green color text without newline
+func InfoNnlNoColor(stringToPrint string) {
+	if currentLoggingLevel <= InfoLevel {
+		WhiteOutput(createOutputString(stringToPrint, "INFO", false))
+		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+	}
+}
+
 //Debug outputs log line to console with yellow color text
 func Debug(stringToPrint string) {
 	if currentLoggingLevel <= DebugLevel {
@@ -111,6 +127,22 @@ func DebugNnl(stringToPrint string) {
 	}
 }
 
+//Debug outputs log line to console with yellow color text
+func DebugNoColor(stringToPrint string) {
+	if currentLoggingLevel <= DebugLevel {
+		WhiteOutput(createOutputString(stringToPrint, "DEBUG", true))
+		//YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+	}
+}
+
+//DebugNnl outputs log line to console with yellow color text without newline
+func DebugNnlNoColor(stringToPrint string) {
+	if currentLoggingLevel <= DebugLevel {
+		WhiteOutput(createOutputString(stringToPrint, "DEBUG", false))
+		// YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+	}
+}
+
 //Error outputs log line to console with red color text
 func Error(stringToPrint string) {
 	RedOutput(createOutputString(stringToPrint, "ERROR", true))
@@ -123,6 +155,18 @@ func ErrorNnl(stringToPrint string) {
 	// RedOutput(fmt.Sprintf("%s: ERROR %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
 }
 
+//Error outputs log line to console with red color text
+func ErrorNoColor(stringToPrint string) {
+	WhiteOutput(createOutputString(stringToPrint, "ERROR", true))
+	// RedOutput(fmt.Sprintf("%s: ERROR %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+}
+
+//ErrorNnl outputs log line to console with red color text without newline
+func ErrorNnlNoColor(stringToPrint string) {
+	WhiteOutput(createOutputString(stringToPrint, "ERROR", true))
+	// RedOutput(fmt.Sprintf("%s: ERROR %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+}
+
 //ErrorAndExit outputs log line to console with red color text and exits
 func ErrorAndExit(stringToPrint string) {
 	Error(stringToPrint)
@@ -132,6 +176,18 @@ func ErrorAndExit(stringToPrint string) {
 //ErrorAndExitNnl outputs the log line to the console with red color text with no newline and exits
 func ErrorAndExitNnl(stringToPrint string) {
 	ErrorNnl(stringToPrint)
+	os.Exit(1)
+}
+
+//ErrorAndExit outputs log line to console with red color text and exits
+func ErrorAndExitNoColor(stringToPrint string) {
+	ErrorNoColor(stringToPrint)
+	os.Exit(1)
+}
+
+//ErrorAndExitNnl outputs the log line to the console with red color text with no newline and exits
+func ErrorAndExitNnlNoColor(stringToPrint string) {
+	ErrorNnlNoColor(stringToPrint)
 	os.Exit(1)
 }
 
