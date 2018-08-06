@@ -45,6 +45,7 @@ func ColoredOutput(colorPrinter *color.Color, stringToPrint string) {
 		LoggingOutputReciever <- stringToPrint
 	}
 	colorPrinter.Printf(stringToPrint)
+	color.Unset()
 }
 
 func GreenOutput(stringToPrint string) {
@@ -53,6 +54,7 @@ func GreenOutput(stringToPrint string) {
 	}
 	green := color.New(color.FgGreen)
 	green.Printf(stringToPrint)
+	color.Unset()
 }
 
 func YellowOutput(stringToPrint string) {
@@ -61,6 +63,7 @@ func YellowOutput(stringToPrint string) {
 	}
 	yellow := color.New(color.FgYellow)
 	yellow.Printf(stringToPrint)
+	color.Unset()
 }
 
 func RedOutput(stringToPrint string) {
@@ -69,6 +72,7 @@ func RedOutput(stringToPrint string) {
 	}
 	red := color.New(color.FgRed)
 	red.Printf(stringToPrint)
+	color.Unset()
 }
 
 func WhiteOutput(stringToPrint string) {
@@ -77,6 +81,7 @@ func WhiteOutput(stringToPrint string) {
 	}
 	white := color.New(color.FgWhite)
 	white.Printf(stringToPrint)
+	color.Unset()
 }
 
 //Info outputs log line to console with green color text
