@@ -12,7 +12,7 @@ import (
 
 type Level int
 
-var currentLoggingLevel Level
+var CurrentLoggingLevel Level
 var LoggingOutputReciever chan string
 var OutputLogLevelFlag = true
 var OutputPath bool = true
@@ -26,7 +26,7 @@ const (
 )
 
 func init() {
-	currentLoggingLevel = InfoLevel
+	CurrentLoggingLevel = InfoLevel
 }
 
 func createCallbackLabel() string {
@@ -36,7 +36,7 @@ func createCallbackLabel() string {
 
 //SetLevel allows settings of the level of logging
 func SetLevel(loggingLevel Level) {
-	currentLoggingLevel = loggingLevel
+	CurrentLoggingLevel = loggingLevel
 }
 
 //ColoredOutput helper to make it easy to logout with date time stamp
@@ -86,7 +86,7 @@ func WhiteOutput(stringToPrint string) {
 
 //Info outputs log line to console with green color text
 func Info(stringToPrint string) {
-	if currentLoggingLevel <= InfoLevel {
+	if CurrentLoggingLevel <= InfoLevel {
 		GreenOutput(createOutputString(stringToPrint, "INFO", true))
 		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
@@ -94,7 +94,7 @@ func Info(stringToPrint string) {
 
 //InfoNnl outputs log line to console with green color text without newline
 func InfoNnl(stringToPrint string) {
-	if currentLoggingLevel <= InfoLevel {
+	if CurrentLoggingLevel <= InfoLevel {
 		GreenOutput(createOutputString(stringToPrint, "INFO", false))
 		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
@@ -102,7 +102,7 @@ func InfoNnl(stringToPrint string) {
 
 //Info outputs log line to console with green color text
 func InfoNoColor(stringToPrint string) {
-	if currentLoggingLevel <= InfoLevel {
+	if CurrentLoggingLevel <= InfoLevel {
 		WhiteOutput(createOutputString(stringToPrint, "INFO", true))
 		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
@@ -110,7 +110,7 @@ func InfoNoColor(stringToPrint string) {
 
 //InfoNnl outputs log line to console with green color text without newline
 func InfoNnlNoColor(stringToPrint string) {
-	if currentLoggingLevel <= InfoLevel {
+	if CurrentLoggingLevel <= InfoLevel {
 		WhiteOutput(createOutputString(stringToPrint, "INFO", false))
 		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
@@ -118,7 +118,7 @@ func InfoNnlNoColor(stringToPrint string) {
 
 //Debug outputs log line to console with yellow color text
 func Debug(stringToPrint string) {
-	if currentLoggingLevel <= DebugLevel {
+	if CurrentLoggingLevel <= DebugLevel {
 		YellowOutput(createOutputString(stringToPrint, "DEBUG", true))
 		//YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
@@ -126,7 +126,7 @@ func Debug(stringToPrint string) {
 
 //DebugNnl outputs log line to console with yellow color text without newline
 func DebugNnl(stringToPrint string) {
-	if currentLoggingLevel <= DebugLevel {
+	if CurrentLoggingLevel <= DebugLevel {
 		YellowOutput(createOutputString(stringToPrint, "DEBUG", false))
 		// YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
@@ -134,7 +134,7 @@ func DebugNnl(stringToPrint string) {
 
 //Debug outputs log line to console with yellow color text
 func DebugNoColor(stringToPrint string) {
-	if currentLoggingLevel <= DebugLevel {
+	if CurrentLoggingLevel <= DebugLevel {
 		WhiteOutput(createOutputString(stringToPrint, "DEBUG", true))
 		//YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
@@ -142,7 +142,7 @@ func DebugNoColor(stringToPrint string) {
 
 //DebugNnl outputs log line to console with yellow color text without newline
 func DebugNnlNoColor(stringToPrint string) {
-	if currentLoggingLevel <= DebugLevel {
+	if CurrentLoggingLevel <= DebugLevel {
 		WhiteOutput(createOutputString(stringToPrint, "DEBUG", false))
 		// YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
