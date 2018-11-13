@@ -14,6 +14,7 @@ type Level int
 
 var CurrentLoggingLevel Level
 var LoggingOutputReciever chan string
+var ColorLogLevelLabelOnly = false
 var OutputLogLevelFlag = true
 var OutputPath bool = true
 var OutputDateTime bool = true
@@ -87,16 +88,28 @@ func WhiteOutput(stringToPrint string) {
 //Info outputs log line to console with green color text
 func Info(stringToPrint string) {
 	if CurrentLoggingLevel <= InfoLevel {
-		GreenOutput(createOutputString(stringToPrint, "INFO", true))
-		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+		if ColorLogLevelLabelOnly == false {
+			GreenOutput(createOutputString(stringToPrint, "INFO", true))
+			// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+		} else {
+			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
+			GreenOutput(" INFO ")
+			WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(), stringToPrint))
+		}
 	}
 }
 
 //InfoNnl outputs log line to console with green color text without newline
 func InfoNnl(stringToPrint string) {
 	if CurrentLoggingLevel <= InfoLevel {
-		GreenOutput(createOutputString(stringToPrint, "INFO", false))
-		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+		if ColorLogLevelLabelOnly == false {
+			GreenOutput(createOutputString(stringToPrint, "INFO", false))
+			// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+		} else {
+			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
+			GreenOutput(" INFO ")
+			WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(), stringToPrint))
+		}
 	}
 }
 
@@ -119,16 +132,28 @@ func InfoNnlNoColor(stringToPrint string) {
 //Debug outputs log line to console with yellow color text
 func Debug(stringToPrint string) {
 	if CurrentLoggingLevel <= DebugLevel {
-		YellowOutput(createOutputString(stringToPrint, "DEBUG", true))
-		//YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+		if ColorLogLevelLabelOnly == false {
+			YellowOutput(createOutputString(stringToPrint, "DEBUG", true))
+			//YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+		} else {
+			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
+			YellowOutput(" DEBUG ")
+			WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(), stringToPrint))
+		}
 	}
 }
 
 //DebugNnl outputs log line to console with yellow color text without newline
 func DebugNnl(stringToPrint string) {
 	if CurrentLoggingLevel <= DebugLevel {
-		YellowOutput(createOutputString(stringToPrint, "DEBUG", false))
-		// YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+		if ColorLogLevelLabelOnly == false {
+			YellowOutput(createOutputString(stringToPrint, "DEBUG", false))
+			// YellowOutput(fmt.Sprintf("%s: DEBUG %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+		} else {
+			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
+			YellowOutput(" DEBUG ")
+			WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(), stringToPrint))
+		}
 	}
 }
 
@@ -150,14 +175,26 @@ func DebugNnlNoColor(stringToPrint string) {
 
 //Error outputs log line to console with red color text
 func Error(stringToPrint string) {
-	RedOutput(createOutputString(stringToPrint, "ERROR", true))
-	// RedOutput(fmt.Sprintf("%s: ERROR %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+	if ColorLogLevelLabelOnly == false {
+		RedOutput(createOutputString(stringToPrint, "ERROR", true))
+		// RedOutput(fmt.Sprintf("%s: ERROR %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+	} else {
+		WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
+		RedOutput(" ERROR ")
+		WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(), stringToPrint))
+	}
 }
 
 //ErrorNnl outputs log line to console with red color text without newline
 func ErrorNnl(stringToPrint string) {
-	RedOutput(createOutputString(stringToPrint, "ERROR", true))
-	// RedOutput(fmt.Sprintf("%s: ERROR %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+	if ColorLogLevelLabelOnly == false {
+		RedOutput(createOutputString(stringToPrint, "ERROR", true))
+		// RedOutput(fmt.Sprintf("%s: ERROR %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+	} else {
+		WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
+		RedOutput(" ERROR ")
+		WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(), stringToPrint))
+	}
 }
 
 //Error outputs log line to console with red color text
