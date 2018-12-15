@@ -31,7 +31,7 @@ func init() {
 }
 
 func createCallbackLabel() string {
-	function, _, line, _ := runtime.Caller(3)
+	function, _, line, _ := runtime.Caller(2)
 	return fmt.Sprintf("(%s):%d", runtime.FuncForPC(function).Name(), line)
 }
 
