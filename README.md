@@ -6,7 +6,7 @@ Very simple logging - Color actually works on Windows
 * Blank - will not show logging output at all
 * Info - will show info log output only
 * Warn - will show info log output and warnings
-* Debug - will show all logs outputs
+* Debug - will show all logs outputs including debug
 
 * Error - this will always get outputted regardless of set log level
 
