@@ -12,7 +12,7 @@ Very simple logging - Color actually works on Windows
 
 **Colors**
 
-By default the whole log line is coloured with its corresponding level color however this can be disabled to only color the log level label.
+By default the whole log line is colored with its corresponding level color however this can be disabled to only color the log level label.
 
 Full color
 
