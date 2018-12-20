@@ -22,7 +22,8 @@ var OutputArrowSuffix bool = true
 
 const (
 	BlankLevel Level = 10
-	InfoLevel  Level = 2
+	InfoLevel  Level = 3
+	WarnLevel  Level = 2
 	DebugLevel Level = 1
 )
 
@@ -125,6 +126,50 @@ func InfoNoColor(stringToPrint string) {
 func InfoNnlNoColor(stringToPrint string) {
 	if CurrentLoggingLevel <= InfoLevel {
 		WhiteOutput(createOutputString(stringToPrint, "INFO", false))
+		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+	}
+}
+
+//Warn outputs log line to console with yellow color text
+func Warn(stringToPrint string) {
+	if CurrentLoggingLevel <= WarnLevel {
+		if ColorLogLevelLabelOnly == false {
+			YellowOutput(createOutputString(stringToPrint, "WARN", true))
+			// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+		} else {
+			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
+			YellowOutput(" WARN ")
+			WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(), stringToPrint))
+		}
+	}
+}
+
+//WarnNnl outputs log line to console with yellow color text without newline
+func WarnNnl(stringToPrint string) {
+	if CurrentLoggingLevel <= WarnLevel {
+		if ColorLogLevelLabelOnly == false {
+			YellowOutput(createOutputString(stringToPrint, "WARN", false))
+			// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
+		} else {
+			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
+			YellowOutput(" WARN ")
+			WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(), stringToPrint))
+		}
+	}
+}
+
+//Warn outputs log line to console with yellow color text
+func WarnNoColor(stringToPrint string) {
+	if CurrentLoggingLevel <= WarnLevel {
+		WhiteOutput(createOutputString(stringToPrint, "WARN", true))
+		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s\n", GetTimeString(), createCallbackLabel(), stringToPrint))
+	}
+}
+
+//DebugNnl outputs log line to console with green color text without newline
+func WarnNnlNoColor(stringToPrint string) {
+	if CurrentLoggingLevel <= DebugLevel {
+		WhiteOutput(createOutputString(stringToPrint, "WARN", false))
 		// GreenOutput(fmt.Sprintf("%s: INFO %s -> %s", GetTimeString(), createCallbackLabel(), stringToPrint))
 	}
 }
