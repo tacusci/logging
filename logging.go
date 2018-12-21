@@ -31,8 +31,8 @@ func init() {
 	CurrentLoggingLevel = InfoLevel
 }
 
-func createCallbackLabel() string {
-	function, _, line, _ := runtime.Caller(2)
+func createCallbackLabel(skip int) string {
+	function, _, line, _ := runtime.Caller(skip)
 	return fmt.Sprintf("(%s):%d", runtime.FuncForPC(function).Name(), line)
 }
 
@@ -94,7 +94,7 @@ func Info(stringToPrint string) {
 		} else {
 			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
 			GreenOutput(" INFO ")
-			WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(), stringToPrint))
+			WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(2), stringToPrint))
 		}
 	}
 }
@@ -107,7 +107,7 @@ func InfoNnl(stringToPrint string) {
 		} else {
 			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
 			GreenOutput(" INFO ")
-			WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(), stringToPrint))
+			WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(2), stringToPrint))
 		}
 	}
 }
@@ -134,7 +134,7 @@ func Warn(stringToPrint string) {
 		} else {
 			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
 			YellowOutput(" WARN ")
-			WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(), stringToPrint))
+			WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(2), stringToPrint))
 		}
 	}
 }
@@ -147,7 +147,7 @@ func WarnNnl(stringToPrint string) {
 		} else {
 			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
 			YellowOutput(" WARN ")
-			WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(), stringToPrint))
+			WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(2), stringToPrint))
 		}
 	}
 }
@@ -174,7 +174,7 @@ func Debug(stringToPrint string) {
 		} else {
 			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
 			YellowOutput(" DEBUG ")
-			WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(), stringToPrint))
+			WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(2), stringToPrint))
 		}
 	}
 }
@@ -187,7 +187,7 @@ func DebugNnl(stringToPrint string) {
 		} else {
 			WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
 			YellowOutput(" DEBUG ")
-			WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(), stringToPrint))
+			WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(2), stringToPrint))
 		}
 	}
 }
@@ -213,7 +213,7 @@ func Error(stringToPrint string) {
 	} else {
 		WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
 		RedOutput(" ERROR ")
-		WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(), stringToPrint))
+		WhiteOutput(fmt.Sprintf("%s -> %s\n", createCallbackLabel(2), stringToPrint))
 	}
 }
 
@@ -224,7 +224,7 @@ func ErrorNnl(stringToPrint string) {
 	} else {
 		WhiteOutput(fmt.Sprintf("%s:", GetTimeString()))
 		RedOutput(" ERROR ")
-		WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(), stringToPrint))
+		WhiteOutput(fmt.Sprintf("%s -> %s", createCallbackLabel(2), stringToPrint))
 	}
 }
 
@@ -280,7 +280,7 @@ func createOutputString(stp string, lvl string, nl bool) string {
 		sb.WriteString(lvl)
 	}
 	if OutputPath {
-		sb.WriteString(fmt.Sprintf(" %s", createCallbackLabel()))
+		sb.WriteString(fmt.Sprintf(" %s", createCallbackLabel(3)))
 	}
 	if OutputArrowSuffix {
 		sb.WriteString(fmt.Sprintf(" -> %s", stp))
