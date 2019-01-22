@@ -13,7 +13,7 @@ import (
 type Level int
 
 var CurrentLoggingLevel Level
-var LoggingOutputReciever chan string
+var loggingOutputReciever chan string
 var ColorLogLevelLabelOnly = false
 var OutputLogLevelFlag = true
 var OutputPath bool = true
@@ -43,16 +43,16 @@ func SetLevel(loggingLevel Level) {
 
 //ColoredOutput helper to make it easy to logout with date time stamp
 func ColoredOutput(colorPrinter *color.Color, stringToPrint string) {
-	if LoggingOutputReciever != nil {
-		LoggingOutputReciever <- stringToPrint
+	if loggingOutputReciever != nil {
+		loggingOutputReciever <- stringToPrint
 	}
 	colorPrinter.Printf(stringToPrint)
 	color.Unset()
 }
 
 func GreenOutput(stringToPrint string) {
-	if LoggingOutputReciever != nil {
-		LoggingOutputReciever <- stringToPrint
+	if loggingOutputReciever != nil {
+		loggingOutputReciever <- stringToPrint
 	}
 	green := color.New(color.FgGreen)
 	green.Printf(stringToPrint)
@@ -60,8 +60,8 @@ func GreenOutput(stringToPrint string) {
 }
 
 func YellowOutput(stringToPrint string) {
-	if LoggingOutputReciever != nil {
-		LoggingOutputReciever <- stringToPrint
+	if loggingOutputReciever != nil {
+		loggingOutputReciever <- stringToPrint
 	}
 	yellow := color.New(color.FgYellow)
 	yellow.Printf(stringToPrint)
@@ -69,8 +69,8 @@ func YellowOutput(stringToPrint string) {
 }
 
 func RedOutput(stringToPrint string) {
-	if LoggingOutputReciever != nil {
-		LoggingOutputReciever <- stringToPrint
+	if loggingOutputReciever != nil {
+		loggingOutputReciever <- stringToPrint
 	}
 	red := color.New(color.FgRed)
 	red.Printf(stringToPrint)
@@ -78,8 +78,8 @@ func RedOutput(stringToPrint string) {
 }
 
 func WhiteOutput(stringToPrint string) {
-	if LoggingOutputReciever != nil {
-		LoggingOutputReciever <- stringToPrint
+	if loggingOutputReciever != nil {
+		loggingOutputReciever <- stringToPrint
 	}
 	white := color.New(color.FgWhite)
 	white.Printf(stringToPrint)
