@@ -13,7 +13,7 @@ import (
 type Level int
 
 var CurrentLoggingLevel Level
-var loggingOutputReciever chan string
+var LoggingOutputReciever chan string
 var ColorLogLevelLabelOnly = false
 var OutputLogLevelFlag = true
 var OutputPath bool = true
@@ -29,6 +29,30 @@ const (
 
 func init() {
 	CurrentLoggingLevel = InfoLevel
+	LoggingOutputReciever = make(chan string)
+}
+
+func FlushLogs(logFilePath string) {
+	f, err := os.Create(logFilePath)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for d := range LoggingOutputReciever {
+		_, err = fmt.Fprint(f, d)
+		if err != nil {
+			fmt.Println(err)
+			f.Close()
+			return
+		}
+	}
+
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 func createCallbackLabel(skip int) string {
@@ -43,16 +67,16 @@ func SetLevel(loggingLevel Level) {
 
 //ColoredOutput helper to make it easy to logout with date time stamp
 func ColoredOutput(colorPrinter *color.Color, stringToPrint string) {
-	if loggingOutputReciever != nil {
-		loggingOutputReciever <- stringToPrint
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
 	}
 	colorPrinter.Printf(stringToPrint)
 	color.Unset()
 }
 
 func GreenOutput(stringToPrint string) {
-	if loggingOutputReciever != nil {
-		loggingOutputReciever <- stringToPrint
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
 	}
 	green := color.New(color.FgGreen)
 	green.Printf(stringToPrint)
@@ -60,8 +84,8 @@ func GreenOutput(stringToPrint string) {
 }
 
 func YellowOutput(stringToPrint string) {
-	if loggingOutputReciever != nil {
-		loggingOutputReciever <- stringToPrint
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
 	}
 	yellow := color.New(color.FgYellow)
 	yellow.Printf(stringToPrint)
@@ -69,8 +93,8 @@ func YellowOutput(stringToPrint string) {
 }
 
 func RedOutput(stringToPrint string) {
-	if loggingOutputReciever != nil {
-		loggingOutputReciever <- stringToPrint
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
 	}
 	red := color.New(color.FgRed)
 	red.Printf(stringToPrint)
@@ -78,8 +102,8 @@ func RedOutput(stringToPrint string) {
 }
 
 func WhiteOutput(stringToPrint string) {
-	if loggingOutputReciever != nil {
-		loggingOutputReciever <- stringToPrint
+	if LoggingOutputReciever != nil {
+		LoggingOutputReciever <- stringToPrint
 	}
 	white := color.New(color.FgWhite)
 	white.Printf(stringToPrint)
