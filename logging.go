@@ -29,27 +29,27 @@ const (
 
 func init() {
 	CurrentLoggingLevel = InfoLevel
-	LoggingOutputReciever = make(chan string)
 }
 
-func FlushLogs(logFilePath string) {
+func FlushLogs(logFilePath string, flushInitialised *chan bool) {
 	f, err := os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Println(err)
-		err = f.Close()
-		if err != nil {
-			fmt.Println(err)
-		}
+		Error(err.Error())
+		*flushInitialised <- true
 		return
 	}
+
+	*flushInitialised <- true
+
+	LoggingOutputReciever = make(chan string)
 
 	for d := range LoggingOutputReciever {
 		_, err = fmt.Fprint(f, d)
 		if err != nil {
-			fmt.Println(err)
+			Error(err.Error())
 			err = f.Close()
 			if err != nil {
-				fmt.Println(err)
+				Error(err.Error())
 			}
 			return
 		}
