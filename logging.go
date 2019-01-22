@@ -33,9 +33,13 @@ func init() {
 }
 
 func FlushLogs(logFilePath string) {
-	f, err := os.Create(logFilePath)
+	f, err := os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
+		err = f.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
 		return
 	}
 
@@ -43,7 +47,10 @@ func FlushLogs(logFilePath string) {
 		_, err = fmt.Fprint(f, d)
 		if err != nil {
 			fmt.Println(err)
-			f.Close()
+			err = f.Close()
+			if err != nil {
+				fmt.Println(err)
+			}
 			return
 		}
 	}
