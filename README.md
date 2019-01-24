@@ -22,4 +22,3 @@ Label only color
 
 ![Label color only](.github/1.JPG)
 
-Currently only logs to stdio there isn't any option to output to file or non-stdio.
