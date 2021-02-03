@@ -27,14 +27,6 @@ var (
 var CurrentLoggingLevel level = InfoLevel
 var ColorLogLevelLabelOnly = true
 
-var greenPrinter, yellowPrinter, redPrinter *color.Color
-
-func init() {
-	greenPrinter = color.New(color.FgGreen)
-	yellowPrinter = color.New(color.FgYellow)
-	redPrinter = color.New(color.FgRed)
-}
-
 //SetLevel allows settings of the level of logging
 func SetLevel(loggingLevel level) {
 	CurrentLoggingLevel = loggingLevel
