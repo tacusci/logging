@@ -9,90 +9,69 @@ import (
 	"github.com/fatih/color"
 )
 
-type Level int
+type level struct {
+	index int
+	s     string
+	p     *color.Color
+}
 
-var CurrentLoggingLevel Level
+var (
+	DebugLevel level = level{index: 1, s: "DEBUG", p: color.New(color.FgYellow)}
+	WarnLevel  level = level{index: 2, s: "WARN", p: color.New(color.FgYellow)}
+	InfoLevel  level = level{index: 3, s: "INFO", p: color.New(color.FgGreen)}
+	errorLevel level = level{index: 4, s: "ERROR", p: color.New(color.FgRed)}
+)
+
+var CurrentLoggingLevel level = InfoLevel
 var ColorLogLevelLabelOnly = true
 
 var greenPrinter, yellowPrinter, redPrinter *color.Color
 
-const (
-	BlankLevel Level = 10
-	InfoLevel  Level = 3
-	WarnLevel  Level = 2
-	DebugLevel Level = 1
-)
-
 func init() {
-	CurrentLoggingLevel = InfoLevel
 	greenPrinter = color.New(color.FgGreen)
 	yellowPrinter = color.New(color.FgYellow)
 	redPrinter = color.New(color.FgRed)
 }
 
 //SetLevel allows settings of the level of logging
-func SetLevel(loggingLevel Level) {
+func SetLevel(loggingLevel level) {
 	CurrentLoggingLevel = loggingLevel
+}
+
+func log(logLevel level, format string, a ...interface{}) (n int, err error) {
+	if CurrentLoggingLevel.index > logLevel.index {
+		return
+	}
+
+	printFunc := logLevel.p.Printf
+	strPrintFunc := logLevel.p.Sprintf
+	colorInjector := logLevel.p.SprintFunc()
+	if ColorLogLevelLabelOnly {
+		printFunc = fmt.Printf
+		strPrintFunc = fmt.Sprintf
+	}
+
+	return printFunc("%s [%s] %s\n", getTimeString(), colorInjector(logLevel.s), strPrintFunc(format, a...))
 }
 
 //Info outputs log line to console with green color text
 func Info(format string, a ...interface{}) (n int, err error) {
-	if CurrentLoggingLevel > InfoLevel {
-		return
-	}
-
-	printFunc := greenPrinter.Printf
-	strPrintFunc := greenPrinter.Sprintf
-	if ColorLogLevelLabelOnly {
-		printFunc = fmt.Printf
-		strPrintFunc = fmt.Sprintf
-	}
-
-	return printFunc("%s %s %s\n", getTimeString(), color.GreenString("[INFO]"), strPrintFunc(format, a...))
+	return log(InfoLevel, format, a...)
 }
 
 //Warn outputs log line to console with yellow color text
 func Warn(format string, a ...interface{}) (n int, err error) {
-	if CurrentLoggingLevel > WarnLevel {
-		return
-	}
-
-	printFunc := yellowPrinter.Printf
-	strPrintFunc := yellowPrinter.Sprintf
-	if ColorLogLevelLabelOnly {
-		printFunc = fmt.Printf
-		strPrintFunc = fmt.Sprintf
-	}
-
-	return printFunc("%s %s %s\n", getTimeString(), color.YellowString("[WARN]"), strPrintFunc(format, a...))
+	return log(WarnLevel, format, a...)
 }
 
 //Debug outputs log line to console with yellow color text
 func Debug(format string, a ...interface{}) (n int, err error) {
-	if CurrentLoggingLevel > DebugLevel {
-		return
-	}
-
-	printFunc := yellowPrinter.Printf
-	strPrintFunc := yellowPrinter.Sprintf
-	if ColorLogLevelLabelOnly {
-		printFunc = fmt.Printf
-		strPrintFunc = fmt.Sprintf
-	}
-
-	return printFunc("%s %s %s\n", getTimeString(), color.YellowString("[DEBUG]"), strPrintFunc(format, a...))
+	return log(DebugLevel, format, a...)
 }
 
 //Error outputs log line to console with red color text
 func Error(format string, a ...interface{}) (n int, err error) {
-	printFunc := redPrinter.Printf
-	strPrintFunc := redPrinter.Sprintf
-	if ColorLogLevelLabelOnly {
-		printFunc = fmt.Printf
-		strPrintFunc = fmt.Sprintf
-	}
-
-	return printFunc("%s %s %s\n", getTimeString(), color.RedString("[ERROR]"), strPrintFunc(format, a...))
+	return log(errorLevel, format, a...)
 }
 
 //ErrorAndExit outputs log line to console with red color text and exits
