@@ -2,6 +2,7 @@ package logging
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"runtime"
 	"time"
@@ -11,15 +12,16 @@ import (
 
 type level struct {
 	index int
-	s     string
+	w     io.Writer
 	p     *color.Color
+	s     string
 }
 
 var (
-	DebugLevel level = level{index: 1, s: "DEBUG", p: color.New(color.FgYellow)}
-	WarnLevel  level = level{index: 2, s: "WARN", p: color.New(color.FgYellow)}
-	InfoLevel  level = level{index: 3, s: "INFO", p: color.New(color.FgGreen)}
-	errorLevel level = level{index: 4, s: "ERROR", p: color.New(color.FgRed)}
+	DebugLevel level = level{index: 1, w: color.Output, s: "DEBUG", p: color.New(color.FgYellow)}
+	WarnLevel  level = level{index: 2, w: color.Output, s: "WARN", p: color.New(color.FgYellow)}
+	InfoLevel  level = level{index: 3, w: color.Output, s: "INFO", p: color.New(color.FgGreen)}
+	errorLevel level = level{index: 4, w: color.Error, s: "ERROR", p: color.New(color.FgRed)}
 )
 
 var CurrentLoggingLevel level = InfoLevel
@@ -43,15 +45,15 @@ func log(logLevel level, format string, a ...interface{}) (n int, err error) {
 		return
 	}
 
-	printFunc := logLevel.p.Printf
+	printFunc := logLevel.p.Fprintf
 	strPrintFunc := logLevel.p.Sprintf
 	colorInjector := logLevel.p.SprintFunc()
 	if ColorLogLevelLabelOnly {
-		printFunc = fmt.Printf
+		printFunc = fmt.Fprintf
 		strPrintFunc = fmt.Sprintf
 	}
 
-	return printFunc("%s [%s] %s\n", getTimeString(), colorInjector(logLevel.s), strPrintFunc(format, a...))
+	return printFunc(logLevel.w, "%s [%s] %s\n", getTimeString(), colorInjector(logLevel.s), strPrintFunc(format, a...))
 }
 
 //Info outputs log line to console with green color text
