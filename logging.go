@@ -19,6 +19,7 @@ var OutputLogLevelFlag = true
 var OutputPath bool = true
 var OutputDateTime bool = true
 var OutputArrowSuffix bool = true
+var RedToStdErrOut bool = false
 
 const (
 	BlankLevel Level = 10
@@ -104,7 +105,9 @@ func RedOutput(stringToPrint string) {
 		LoggingOutputReciever <- stringToPrint
 	}
 	red := color.New(color.FgRed)
-	red.Printf(stringToPrint)
+	if RedToStdErrOut {
+		red.Fprintf(os.Stderr, stringToPrint)
+	}
 	color.Unset()
 }
 
