@@ -26,6 +26,8 @@ var (
 
 var CurrentLoggingLevel level = InfoLevel
 var ColorLogLevelLabelOnly = true
+var CallbackLabel = false
+var CallbackLabelLevel = 2
 
 //SetLevel allows settings of the level of logging
 func SetLevel(loggingLevel level) {
@@ -45,7 +47,19 @@ func log(logLevel level, format string, a ...interface{}) (n int, err error) {
 		strPrintFunc = fmt.Sprintf
 	}
 
-	return printFunc(logLevel.w, "%s [%s] %s\n", getTimeString(), colorInjector(logLevel.s), strPrintFunc(format, a...))
+	return printFunc(
+		logLevel.w,
+		"%s [%s]%s %s\n",
+		getTimeString(),
+		colorInjector(logLevel.s),
+		func() string {
+			if CallbackLabel {
+				return fmt.Sprintf("(%s)", createCallbackLabel(CallbackLabelLevel))
+			}
+			return ""
+		}(),
+		strPrintFunc(format, a...),
+	)
 }
 
 //Info outputs log line to console with green color text
