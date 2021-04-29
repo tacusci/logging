@@ -18,10 +18,11 @@ type level struct {
 }
 
 var (
-	DebugLevel level = level{index: 1, w: color.Output, s: "DEBUG", p: color.New(color.FgYellow)}
-	WarnLevel  level = level{index: 2, w: color.Output, s: "WARN", p: color.New(color.FgYellow)}
-	InfoLevel  level = level{index: 3, w: color.Output, s: "INFO", p: color.New(color.FgGreen)}
-	errorLevel level = level{index: 4, w: color.Error, s: "ERROR", p: color.New(color.FgRed)}
+	SilentLevel level = level{index: 0, w: nil, s: "", p: nil}
+	DebugLevel  level = level{index: 1, w: color.Output, s: "DEBUG", p: color.New(color.FgYellow)}
+	WarnLevel   level = level{index: 2, w: color.Output, s: "WARN", p: color.New(color.FgYellow)}
+	InfoLevel   level = level{index: 3, w: color.Output, s: "INFO", p: color.New(color.FgGreen)}
+	errorLevel  level = level{index: 4, w: color.Error, s: "ERROR", p: color.New(color.FgRed)}
 )
 
 var CurrentLoggingLevel level = InfoLevel
@@ -35,7 +36,7 @@ func SetLevel(loggingLevel level) {
 }
 
 func log(logLevel level, format string, a ...interface{}) (n int, err error) {
-	if CurrentLoggingLevel.index > logLevel.index {
+	if CurrentLoggingLevel.index == 0 || CurrentLoggingLevel.index > logLevel.index {
 		return
 	}
 
