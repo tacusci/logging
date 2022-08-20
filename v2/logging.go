@@ -29,6 +29,11 @@ var CurrentLoggingLevel level = InfoLevel
 var ColorLogLevelLabelOnly = true
 var CallbackLabel = false
 var CallbackLabelLevel = 2
+var RefreshLine = false
+var LinePrefix = ""
+var LineSuffix = "\n"
+
+const clearLineCode = "\033[2K"
 
 //SetLevel allows settings of the level of logging
 func SetLevel(loggingLevel level) {
@@ -48,9 +53,16 @@ func log(logLevel level, format string, a ...interface{}) (n int, err error) {
 		strPrintFunc = fmt.Sprintf
 	}
 
+	linePrefix := LinePrefix
+	if RefreshLine {
+		linePrefix = "\r"
+		fmt.Fprint(logLevel.w, clearLineCode)
+	}
+
 	return printFunc(
 		logLevel.w,
-		"%s [%s]%s %s\n",
+		"%s%s [%s]%s %s%s",
+		linePrefix,
 		getTimeString(),
 		colorInjector(logLevel.s),
 		func() string {
@@ -60,6 +72,7 @@ func log(logLevel level, format string, a ...interface{}) (n int, err error) {
 			return ""
 		}(),
 		strPrintFunc(format, a...),
+		LineSuffix,
 	)
 }
 
